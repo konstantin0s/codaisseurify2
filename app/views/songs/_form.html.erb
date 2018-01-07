@@ -1,0 +1,32 @@
+<%= form_for [@artist, @artist.songs.new] do |f| %>
+ <!-- <div class="form-group <%#= @artist.songs.errors.any? ? 'has-error' : '' %>" id="songinput"> -->
+   <%= f.text_field :name, placeholder: "Song name", class: "form-control" %>
+
+   <%# if @artist.song.errors.any? %>
+     <%# song.errors.full_messages.each do |message| %>
+       <!-- <span class="help-block"><%#= message %></span> -->
+     <%# end %>
+   <%# end %>
+ <!-- </div> -->
+
+<div class="actions">
+   <%= f.submit "Save", class: "btn btn-primary", id: 'song-submit-button', data: { disable_with: false } %>
+  </div>
+<% end %>
+
+
+<!-- <%#= form_for [@artist, @artist.songs.new], :html => { :id => "form_songs" } do |f| %>
+ <div class="field">
+
+   <%#= f.text_field :title, placeholder: "Song name", class: 'form-control' %>
+   <%#= f.hidden_field :artist_id, :value => @artist.id %>
+   <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
+   <%# if !@song.nil? %>
+     <%# if @artist.song.errors.any? %>
+       <%# @artist.song.errors.full_messages.each do |message| %>
+         <small class="error"><%#= message %></small>
+       <%# end %>
+     <%# end %>
+   <%# end %>
+ </div>
+<%# end %> -->
