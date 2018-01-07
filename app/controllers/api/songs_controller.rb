@@ -1,32 +1,34 @@
 class Api::SongsController < ApplicationController
   skip_before_action :verify_authenticity_token
-   # before_action :set_artist
+  before_action :set_artist
+before_action :set_artist_song, only: [:show, :update, :destroy]
 
 
-#   def show
-#     json_response(@song)
-# end
+   def show
+     json_response(@artist_songs)
+ end
 
   def index
     songs = @artist.songs
+    @songs = Song.all
     render status: 200, json: songs
 end
 
 
 def create
-  artist = Artist.find(params[:artist_id])
-  song = artist.songs.new(song_params)
+    artist = Artist.find(params[:artist_id])
+    song = artist.songs.new(song_params)
 
-  if song.save
-    render status: 201, json: {
-      message: "Song created",
-      song: song
-    }.to_json
-  else
-    render status: 422, json: {
-      errors: song.errors
-    }.to_json
-  end
+    if song.save
+      render status: 201, json: {
+        message: "Song created",
+        song: song
+      }.to_json
+    else
+      render status: 422, json: {
+        errors: song.errors
+      }.to_json
+    end
 end
 
   def destroy
@@ -46,10 +48,12 @@ end
 
 
   def song_params
-     params.fetch(:song, {}).permit(:title)
+     params.fetch(:song, {}).permit(:name)
   end
 
-
+  def set_artist_song
+     @song = @artist.songs.find_by!(id: params[:id]) if @artist
+ end
 
 
 def set_artist

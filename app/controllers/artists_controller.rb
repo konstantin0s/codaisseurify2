@@ -1,100 +1,74 @@
 class ArtistsController < ApplicationController
- before_action :set_artist, only: [:show, :edit, :update, :destroy]
- #skip_before_action :verify_authenticity_token
+  before_action :set_artist, only: [:show, :edit, :update, :destroy]
 
-
-  def index #will have template
-    @artists = Artist.all
-
-  end
-
-
-def show #will have template
-  @artist = Artist.find(params[:id])
-  @songs = @artist.songs
-  @song = Song.new
-    @photos = @artist.photos
-end
-
-def new #display the form
-  @artist = Artist.new
-end
-
-def create #save new song
-    @artist = Artist.new(allowed_params)
-
-    if @artist.save
-      image_params.each do |image|
-      @artist.photos.create(image: image)
-    end
-      redirect_to artists_path, notice: "You just made an artist."
-    else
-      render 'new'
-    end
-end
-
-  def edit #display for the existing song
-    @artist = Artist.find(params[:id])
-     @photos = @artist.photos
-  end
-
-  def update #save changes
-
-     @artist = Artist.find(params[:id])
-  if @artist.update_attributes(allowed_params)
-     image_params.each do |image|
-      @artist.photos.create(image: image)
-    end
-     redirect_to artist_path
-  else
-    render 'new'
-  end
-
-  end
-
-#def destroy_song
-#    @song = Song.find(params[:id])
-#    @song.destroy
-#    redirect_to artists_path
-#  end
-
-    def destroy
-      @artist = Artist.find(params[:id])
-      @artist.destroy
-
-    respond_to do |format|
-        format.html { redirect_to artists_path }
-        format.json { head :no_content }
-        format.js   { render :layout => false }
-      end
-    end
-
-
-
-    private
-
-    def image_params
-      params[:images].present? ? params.require(:images) : []
-    end
-
-#def set_artist
-  #   @artist = Artist.find(params[:id])
-   #end
-
-   def set_artist
-       @artists = Artist.all
-      end
-
-
-
-   def set_songs
-     @songs = Artist.find(params[:artist_id]).songs
+   def index
+     @artists = Artist.all
+     #@artists = Artist.order_by_name_or_create(params[:order_by])
    end
 
-def allowed_params
-    params.require(:artist).permit(:name, :image)
+   def show
+     #@songs = @artist.songs.paginate(:page => params[:page], per_page: 5)
+     @songs = @artist.songs
 
-end
+   end
 
+   def new
+     @artist = Artist.new
+   end
+
+   def create
+     @artist = Artist.new(artist_params)
+
+     if @artist.save
+       new_photo
+       redirect_to edit_artist_path(@artist), notice: "Artist created"
+     else
+       render :new
+     end
+   end
+
+   def edit
+   end
+
+   def update
+     @artist.update(artist_params)
+     if @artist.update(artist_params)
+       new_photo
+       redirect_to artist_path(@artist), notice: "Artist updated"
+     else
+       render :edit
+     end
+   end
+
+   def destroy
+     if @artist.destroy
+       redirect_to root_path, notice: "Artist removed"
+     else
+       redirect_to @artist, notice: "Cannot delete that Artist"
+     end
+   end
+
+   private
+
+   def new_photo
+     if !image_params.nil?
+       @artist.photo.destroy unless @artist.photo.nil?
+       @artist.photo = Photo.create(image: image_params)
+     end
+   end
+
+   def set_artist
+     @artist = Artist.find(params[:id])
+   end
+
+   def image_params
+   params[:images].present? ? params.require(:images) : nil
+   end
+
+   def artist_params
+     params
+     .require(:artist)
+     .permit(:name)
+ end
 
 end

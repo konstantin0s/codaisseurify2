@@ -1,6 +1,10 @@
-<tr class="song" data-id="<%= song.id %>">
-  <td>
-    <a href="#" class="delete-song" id="song-<%= song.id %>"><span class="glyphicon glyphicon-remove"></span></a>
-    <label for="song-<%= song.id %>"><%= song.name %></label>
-  </td>
-</tr>
+<% if !song.id.nil? %>
+  <tr class="song" data-id="<%= song.id %>">
+    <td width="5%">
+      <input name="song[<%= song.id %>]" id="<%= song.id %>" type="checkbox" >
+    </td>
+    <td>
+      <label for="song-<%= song.id %>"><%= song.name %></label>
+    </td>
+  </tr>
+<% end %>

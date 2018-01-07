@@ -1,14 +1,31 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Codaisseurify2</title>
+    <title>Codaisseurify</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'https://code.jquery.com/jquery-3.2.1.min.js' %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application'  %>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+
   </head>
 
   <body>
-    <%= yield %>
+
+    <div class="container">
+      <%= yield %>
+    </div>
+
+  <br><br>
+  <hr>
+
+  <%= link_to "See all artists", root_path, class: "btn btn-default" %>
+<%= link_to 'Add Artist', new_artist_path, class: "btn btn-default" %>
+
+
   </body>
 </html>

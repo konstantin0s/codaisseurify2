@@ -10,109 +10,115 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require rails-ujs
+
 //= require jquery
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require_tree .
 
 
-var pathname = window.location.pathname;
+function toggleDone() {
+  $(this).parent().parent().toggleClass("danger");
 
-function createSong(title) {
+}
+
+function createSong(name, artist_id) {
+  var newSong = { name: name };
 
   $.ajax({
     type: "POST",
-    url:  "/api" + pathname + "/songs.json",
+    url: "/artists/" + artist_id + "/songs",
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
     data: JSON.stringify({
-      name: title
+        song: newSong
     }),
     contentType: "application/json",
     dataType: "json"
   })
   .done(function(data) {
-  console.log(data)
+    var label = $('<h3></h3>')
+      .html(name);
 
-  var deleteId = "song-" + data.song.id;
+    var checkboxId = data.id;
 
-  var tableRow = $("<tr></tr>");
-  tableRow.addClass("song");
-  tableRow.attr('song-id', data.song.id);
+    var label = $('<label></label>')
+      .attr('for', checkboxId)
+      .html(name);
 
-  var tableData = $("<td></td>");
+    var checkbox = $('<input type="checkbox"/>')
+      .attr('id', checkboxId)
+      .bind('change', toggleDone);
 
-  var deleteLink= $('<a></a>');
-  deleteLink.attr('href', '#');
-  deleteLink.attr('id', deleteId);
-  deleteLink.attr('class', "delete-song");
-  deleteLink.bind('click', deleteSong);
+    var tableRow = $('<tr class="song" data-id="'+data.id+'"></td>')
+      .append($('<td width="5%">').append(checkbox))
+      .append($('<td>').append(label));
 
-  var deleteIcon = $('<span></span>')
-  deleteIcon.attr('class', "glyphicon glyphicon-remove");
-
-  var label = $('<label></label>');
-  label.attr('for', deleteId);
-  label.html(data.song.name);
-
-  deleteLink.append(deleteIcon);
-
-  tableData.append(deleteLink);
-  tableData.append(label);
-
-  tableRow.append(tableData);
-
-  $("#song-list").find('tbody').append( tableRow );
+    $("#songList").append( tableRow );
 
   })
   .fail(function(error) {
-    console.log(error);
-    // error_message = error.responseText;
-    // showError(error_message);
-  })
+   console.log(error);
+
+   error_message = error.responseJSON.name[0];
+      showError(error_message);
+    });
 }
 
-// function showError(message) {
-//   $("#songinput").addClass("error");
-//   var errorElement = $("<small></small>")
-//     .attr("id", "error_message")
-//     .addClass("error")
-//     .html(message);
-//   $(errorElement).appendTo('form .field');
-// }
+function showError(message) {
+  var errorHelpBlock = $('<span class="help-block"></span>')
+    .attr('id', 'error_message')
+    .text(message);
+  $("#form_songs")
+    .addClass("has-error alert alert-danger")
+    .append(errorHelpBlock);
+}
 
-// function resetErrors() {
-//   $("#error_message").remove();
-//   $("#songinput").removeClass("error");
-// }
+function resetErrors() {
+  $("#error_message").remove();
+  $("#form_songs").removeClass("has-error alert alert-danger");
+}
 
 function submitSong(event) {
   event.preventDefault();
-  // resetErrors();
-  createSong($("#song_name").val());
+  resetErrors();
+  createSong($("#song_name").val(),$("#song_artist_id").val());
   $("#song_name").val(null);
+
 }
 
-function deleteSong(event) {
+function deleteSelectedSongs(event) {
   event.preventDefault();
-  var listItem = $(this).parent().parent();
-  var songId = $(listItem).data('id');
-  $.ajax({
-    type: "DELETE",
-    url: "/api" + pathname + "/songs/" + songId + ".json",
-    contentType: "application/json",
-    dataType: "json"})
-  .done(function(data) {
-    listItem.remove();
-  });
-}
+  $.each($(".danger"), function(index, tableRow) {
+      songId = $(tableRow).data('id');
+      deleteSong(songId);
+    });
+  }
 
 function deleteAllSongs(event) {
   event.preventDefault();
-  $(".delete-song").trigger( "click" );
+  $.each($(".song"), function(index, tableRow) {
+      songId = $(tableRow).data('id');
+      deleteSong(songId);
+    });
+  }
+
+function deleteSong(songId) {
+  var artist_id = $("#song_artist_id").val();
+  $.ajax({
+    type: "DELETE",
+    url: "/artists/" + artist_id + "/songs/" + songId + ".json",
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    contentType: "application/json",
+    dataType: "json"
+  })
+  .done(function(data) {
+    $('tr[data-id="'+songId+'"]').remove();
+  });
 }
 
 $(document).ready(function() {
-  $("form").bind('submit', submitSong);
-  $(".delete-song").bind('click', deleteSong);
-  $(".delete-all-songs").bind('click', deleteAllSongs);
+  $("input[type=checkbox]").bind('change', toggleDone);
+  $("#form_songs").bind('submit', submitSong);
+  $("#delete-selected").bind('click', deleteSelectedSongs);
+  $("#delete-all").bind('click', deleteAllSongs);
 });

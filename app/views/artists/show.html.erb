@@ -26,8 +26,26 @@
 </div> <br />
 
 
+<%= render "songs/form", song: @song %>
 
-<%= link_to "Delete all songs", artist_path(@artist.id), class: "btn btn-default delete-all-songs" %>
+  <% @songs.each do |song| %>
+    <% if !song.id.nil? %>
+
+    <% end %>
+  <% end %>
+
+  <table class="table table-striped" id="songList">
+    <tbody>
+      <%= render @songs %>
+    </tbody>
+  </table>
+<!-- <div class="btn-group"> -->
+  <a class="btn btn-default" href="#" id="delete-selected">Delete Song</a>
+  <a class="btn btn-default" href="#" id="delete-all">Delete All Songs</a>
+<!-- </div> -->
+
+
+<!-- <%= link_to "Delete all songs", artist_path(@artist.id), class: "btn btn-default delete-all-songs" %>
 
 
 <h4>Songs: </h4>
@@ -45,7 +63,7 @@
           <div class="panel-body">
             <%= render 'songs/form' %>
           </div>
-        </div>
+        </div> -->
 
   <%#= link_to "Add Song", new_artist_song_path(@artist.id), class: "btn btn-primary", id: "new_songs", remote: true %>
   <%#= render 'shared/new_song', song: @song %>
