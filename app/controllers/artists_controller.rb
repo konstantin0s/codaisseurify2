@@ -10,6 +10,7 @@ class ArtistsController < ApplicationController
      #@songs = @artist.songs.paginate(:page => params[:page], per_page: 5)
      @songs = @artist.songs
 
+
    end
 
    def new
@@ -20,20 +21,28 @@ class ArtistsController < ApplicationController
      @artist = Artist.new(artist_params)
 
      if @artist.save
-       new_photo
-       redirect_to edit_artist_path(@artist), notice: "Artist created"
+       # new_photo
+       image_params.each do |image|
+         @artist.photos.create(image: image)
+       end
+       redirect_to artist_path(@artist), notice: "Artist created"
      else
        render :new
      end
    end
 
    def edit
+     @artist = Artist.find(params[:id])
+     @photos = @artist.photos
    end
 
    def update
      @artist.update(artist_params)
      if @artist.update(artist_params)
-       new_photo
+       # new_photo
+       image_params.each do |image|
+         @artist.photos.create(image: image)
+       end
        redirect_to artist_path(@artist), notice: "Artist updated"
      else
        render :edit
@@ -50,25 +59,30 @@ class ArtistsController < ApplicationController
 
    private
 
-   def new_photo
-     if !image_params.nil?
-       @artist.photo.destroy unless @artist.photo.nil?
-       @artist.photo = Photo.create(image: image_params)
-     end
-   end
+   # def new_photo
+   #   if !image_params.nil?
+   #     @artist.photo.destroy unless @artist.photo.nil?
+   #     @artist.photo = Photo.create(image: image_params)
+   #   end
+   # end
 
    def set_artist
      @artist = Artist.find(params[:id])
    end
 
    def image_params
-   params[:images].present? ? params.require(:images) : nil
+     params[:images].present? ? params.require(:images) : []
    end
+
+
+   # def image_params
+   # params[:images].present? ? params.require(:images) : nil
+   # end
 
    def artist_params
      params
      .require(:artist)
-     .permit(:name)
+     .permit(:name, :image)
  end
 
 end
