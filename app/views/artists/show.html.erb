@@ -2,8 +2,8 @@
       <p id="notice"><%= notice %></p>
 </div>
 <div class="artist">
-      <h1>Singer/ Artist: <%= @artist.name %></h1>
-      <%= link_to "Edit your favorite artist.", edit_artist_path(@artist), class: "btn btn-default" %> <br/>
+      <h1 style="text-align:center;">Singer/ Artist: <%= @artist.name %></h1><br/><hr>
+      <p style="position:relative;float:right;"><%= link_to "Edit your favorite artist.", edit_artist_path(@artist), class: "btn btn-default" %> <br/></p>
 </div>
    <div class="delete-artist">
      <span><%= link_to "Delete Artist", artist_path(@artist.id), class: "delete_artist btn btn-default", method: :delete, data: { confirm: "Are you sure?" }%></span>
