@@ -6,7 +6,7 @@ def destroy
   photo = Photo.find(params[:id])
   @artist = photo.artist
   photo.destroy
-  redirect_to edit_artist_path(@artist), notice: "Photo successfully removed"
+  redirect_to artist_path(@artist), notice: "Photo successfully removed"
 end
 
     private
