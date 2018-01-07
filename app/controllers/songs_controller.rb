@@ -3,9 +3,11 @@ class SongsController < ApplicationController
   skip_before_action :verify_authenticity_token
    before_action :set_artist
 
-   def show
+   def show 
+     @songs = @artist.songs
+     @song = Song.new
 
- end
+   end
 
   def create
      @artist = Artist.find(params[:artist_id])
