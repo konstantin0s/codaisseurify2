@@ -1,0 +1,22 @@
+<div class="title-container">
+     <h1>Artists: </h1>
+     <%= link_to 'Add Artist', new_artist_path, id: "new_link", class: "btn btn-default" %>
+</div>
+<%#= link_to 'View Artists', artist_path(@artist) %>
+<div class="songs">
+    <% @artists.each do |artist| %>
+<div class="song">
+  <div class="thumbnail">
+    <div class="caption">
+     <p>
+       Artist: <%= artist.name %> <br />
+       <%= link_to 'View Artist', artist_path(artist), class: "btn btn-default" %>
+
+
+    </p>
+   </div>
+  </div>
+</div>
+<% end %>
+
+</div>

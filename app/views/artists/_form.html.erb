@@ -1,0 +1,49 @@
+
+<div class="form-container">
+
+     <%= form_for @artist, html: { multipart: true } do |f| %>
+
+   <div class="form-error">
+    <% if @artist.errors.any? %>
+      <div class="errors">
+         <div class="thumbnail">
+        <h2>Errors</h2>
+          <ul>
+    <% @artist.errors.full_messages.each do |message|%>
+      <li class"error"><%= message %></li>
+    <% end %>
+      </div>
+    </div>
+      </ul>
+    <% end %>
+  </div>
+
+
+    <%= f.label :name %> <br />
+    <%= f.text_field :name %> <br /> <br />
+
+    <%#= f.label :image_url %> </br >
+    <%#= f.text_field :image_url %> </br ></br >
+
+
+    <div class="form-group">
+  <span class="btn btn-default">
+    Upload
+    <%= file_field_tag "images[]", type: :file, multiple: true %>
+  </span>
+</div>
+
+<div id="photos">
+  <%#= render 'photos/list' %>
+</div>
+
+
+
+
+    <%= f.submit (@artist.new_record? ? "Create" : "Update"), class: "btn btn-default" %>
+
+
+    <% end %>
+
+
+</div
