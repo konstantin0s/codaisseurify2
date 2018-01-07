@@ -13,7 +13,7 @@ def show #will have template
   @artist = Artist.find(params[:id])
   @songs = @artist.songs
   @song = Song.new
-   @photos = @artist.photos
+   # @photos = @artist.photos
 end
 
 def new #display the form

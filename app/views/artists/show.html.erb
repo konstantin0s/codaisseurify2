@@ -1,0 +1,56 @@
+<div class="notice">
+      <p id="notice"><%= notice %></p>
+</div>
+<div class="artist">
+      <h1>Singer/ Artist: <%= @artist.name %></h1>
+      <%= link_to "Edit your favorite artist.", edit_artist_path(@artist), class: "btn btn-default" %> <br/>
+</div>
+   <div class="delete-artist">
+     <span><%= link_to "Delete Artist", artist_path(@artist.id), class: "delete_artist btn btn-default", method: :delete, data: { confirm: "Are you sure?" }%></span>
+</div>
+   <div class="imagine">
+     <%#= image_tag @artist.image_url %>
+      <h4>Photos of the artist</h4>
+        <% if @artist.photos.any? %>
+          <% @artist.photos.each do |photo| %>
+             <div class="panel panel-default">
+              <div class="panel-heading">
+              <%= image_tag photo.image.thumbnail %>
+               <%= link_to "Delete Photo", artist_photo_path(@artist, photo), class: "btn btn-default", method: :delete, data: { confirm: "Are you sure?" } %>
+              </div>
+             </div>
+          <% end %>
+ <div class="panel-body">
+ </div>
+         <% end %>
+</div> <br />
+
+
+
+<%= link_to "Delete all songs", artist_path(@artist.id), class: "btn btn-default delete-all-songs" %>
+
+
+<h4>Songs: </h4>
+    <% if @artist.songs.any? %>
+      <table class="table table-striped" id="song-list">
+        <%= render @songs %>
+      </table>
+      <% else %>
+        <p>This artist has no songs yet.</p>
+    <% end %>
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">Add new song</div>
+
+          <div class="panel-body">
+            <%= render 'songs/form' %>
+          </div>
+        </div>
+
+  <%#= link_to "Add Song", new_artist_song_path(@artist.id), class: "btn btn-primary", id: "new_songs", remote: true %>
+  <%#= render 'shared/new_song', song: @song %>
+</div>
+
+
+  <br />
+  <br />

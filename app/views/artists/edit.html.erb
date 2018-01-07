@@ -1,0 +1,24 @@
+<h1>Editing Artist: </h1>
+
+<%= render 'form', artist: @artist, remote: true %> <br/>
+
+<%#= render 'photos/list', artist: @artist %> <br/>
+
+
+
+<div class="container col-md-4" id="songs-list">
+  <% @artist.songs.each do |song| %>
+  <div class="song-block" id="<%= song.id %>">
+    <h4 class="song-title">Song: <%= song.title %></h3>
+    <h4><p>Genre: <%= song.genre %></h3>
+      <!-- <%= link_to "[Delete song]", artist_song_path(@artist.id, song.id), id: "remove-song-#{song.id}", method: :delete, data: {confirm: "Are you really sure?"} %> -->
+      <a href="#" class="delete-song" song-id="<%= song.id %>">[New delete link]</a>
+    </p>
+  </div>
+  <% end %>
+</div>
+
+
+
+<%= link_to 'See the artist', artist_path(@artist), class: "btn btn-default" %>
+<%#= link_to 'List of All artists', artists_path %>
