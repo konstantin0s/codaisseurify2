@@ -1,10 +1,8 @@
+
+require 'spec_helper'
 require 'rails_helper'
 
-
-
 RSpec.describe Song, type: :model do
-
-
   context 'validation tests' do
     it 'ensures name presence' do
       song = Song.new(name: 'Masquerada').save
@@ -19,10 +17,8 @@ RSpec.describe Song, type: :model do
   end
 
 
-
   describe "song association with artist" do
-
-      artist = Artist.create!(name: "Super Karma")
+    let(:artist) { create :artist, name: "Livin la vida loca" }
 
     it "belongs to artist" do
       song = artist.songs.new
@@ -33,4 +29,7 @@ RSpec.describe Song, type: :model do
   end
 
 
+  context 'scope tests' do
+
+  end
 end

@@ -31,13 +31,14 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
+# gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'rails_12factor', group: :production
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -48,7 +49,10 @@ group :development, :test do
   gem 'capybara', '~> 2.9', '>= 2.9.1'
 
   gem 'factory_bot_rails'
- gem 'faker'
+  gem 'faker'
+
+  gem 'selenium-webdriver'
+gem "chromedriver-helper"
 end
 
 group :development do
@@ -60,6 +64,16 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+gem 'simplecov', require: false, group: :test
+
+
+group :test do
+  gem 'capybara', '~> 2.9', '>= 2.9.1'
+  gem 'database_cleaner'
+
+  gem 'shoulda-matchers', '~> 3.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
