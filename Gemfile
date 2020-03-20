@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 
-gem 'bootstrap-sass', '~> 3.3.6'
+gem 'bootstrap-sass', '~> 3.4.1'
 
 # Use jQuery for easier javascript
 gem 'jquery-rails', '~> 4.3.1'
