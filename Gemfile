@@ -13,7 +13,7 @@ gem 'jquery-rails', '~> 4.3.1'
 
 gem 'cloudinary', '1.2.3'
 
-gem 'carrierwave', '0.11.2'
+gem 'carrierwave', '1.3.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
